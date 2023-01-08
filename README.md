@@ -15,7 +15,7 @@ This is an incomplete list of things that make me curious about life. Makes me r
 - Paradox of Persuasion. The most argumentative people rarely persuade anyone. The most persuasive people don't argue; they observe, listen, and ask questions. Persuasion is an art that requires a paintbrush, not a sledgehammer.
 - Paradox of Wisdom. "The more I learn, the more I realize how much I don't know." - Albert Einstein. The more you learn, the more you are exposed to the immense unknown.
 - Paradox of Choices. The more choices we have, the more difficult it becomes to choose.
-- Paradox of Perfectionism. The goal to reach perfectionism, becomes a barrier to reach the goal, or not even start the task at hand. The goal should be to iterate continuously, tending towards perefection.
+- Paradox of Perfectionism. The goal to reach perfectionism, becomes a barrier to reach the goal, or not even start the task at hand. The goal should be to iterate continuously, tending towards perfection.
 
 ### pyschology
 
