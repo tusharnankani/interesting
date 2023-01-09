@@ -1,11 +1,11 @@
-This is an incomplete list of things that make me curious about life. Makes me realise there's more to it than just pure coincidence. These make me want to dig deeper.
+This is an incomplete list of things that make me curious about life. It makes me realise there might be more to it than pure coincidence. These make me want to dig deeper.
 
 ### math
 
-- [Escher's Cube](https://en.wikipedia.org/wiki/Impossible_cube) ([Steps](https://www.instructables.com/Draw-Escher-cube))
+- [Escher's Cube](https://en.wikipedia.org/wiki/Impossible_cube) ([steps](https://www.instructables.com/Draw-Escher-cube), [src](https://twitter.com/Rainmaker1973/status/1601894562867183617))
 - [Sierpiński Triangle](https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle)
 - [Menger's Sponge](https://en.wikipedia.org/wiki/Menger_sponge)
-- [Reuleaux Triangle](https://en.wikipedia.org/wiki/Reuleaux_triangle) ([Ref](https://youtube.com/shorts/JDEniX8NAZQ))
+- [Reuleaux Triangle](https://en.wikipedia.org/wiki/Reuleaux_triangle) ([ref](https://youtube.com/shorts/JDEniX8NAZQ))
 - [The book of numbers](https://joeldavidhamkins.substack.com/p/the-book-of-numbers) by [Joel David Hamkins](https://twitter.com/JDHamkins)
 - [Sylvester's Sequence](https://en.m.wikipedia.org/wiki/Sylvester%27s_sequence)
 
