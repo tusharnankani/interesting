@@ -367,26 +367,100 @@ public class ReportRenderer {
         }
     }
     
-    /**
-     * Renders a report in PDF format.
-     */
-    private String renderPdfReport(DataSet dataSet, ReportTemplate template, ReportConfig reportConfig, WorkflowContext context) {
-        String outputPath = generateOutputPath(reportConfig, context, "pdf");
+   /**
+ * Renders a report in PDF format.
+ */
+private String renderPdfReport(DataSet dataSet, ReportTemplate template, ReportConfig reportConfig, WorkflowContext context) {
+    String outputPath = generateOutputPath(reportConfig, context, "pdf");
+    
+    try {
+        // Create output directory if it doesn't exist
+        Path outputDirectory = Paths.get(outputPath).getParent();
+        if (outputDirectory != null && !Files.exists(outputDirectory)) {
+            Files.createDirectories(outputDirectory);
+        }
         
-        try {
-            // Create output directory if it doesn't exist
-            Path outputDirectory = Paths.get(outputPath).getParent();
-            if (outputDirectory != null && !Files.exists(outputDirectory)) {
-                Files.createDirectories(outputDirectory);
+        // Create PDF document
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        PdfWriter.getInstance(document, new FileOutputStream(outputPath));
+        document.open();
+        
+        // Add title
+        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+        String title = template.getPdfTitle() != null ? template.getPdfTitle() : reportConfig.getReportId();
+        Paragraph titleParagraph = new Paragraph(title, titleFont);
+        titleParagraph.setAlignment(Element.ALIGN_CENTER);
+        document.add(titleParagraph);
+        
+        // Add timestamp
+        Font timestampFont = FontFactory.getFont(FontFactory.HELVETICA_ITALIC, 10);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timestamp = "Generated on: " + dateFormat.format(new Date());
+        Paragraph timestampParagraph = new Paragraph(timestamp, timestampFont);
+        timestampParagraph.setAlignment(Element.ALIGN_RIGHT);
+        document.add(timestampParagraph);
+        
+        document.add(new Paragraph(" ")); // Add space
+        
+        // Create table for data
+        List<String> columns = dataSet.getColumnNames();
+        PdfPTable table = new PdfPTable(columns.size());
+        table.setWidthPercentage(100);
+        
+        // Add header row
+        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE);
+        for (String column : columns) {
+            PdfPCell cell = new PdfPCell(new Phrase(column, headerFont));
+            cell.setBackgroundColor(BaseColor.DARK_GRAY);
+            cell.setPadding(5);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+        }
+        
+        // Add data rows
+        Font dataFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
+        for (DataRow row : dataSet.getRows()) {
+            for (String column : columns) {
+                Object value = row.getValue(column);
+                String cellValue = value != null ? value.toString() : "";
+                PdfPCell cell = new PdfPCell(new Phrase(cellValue, dataFont));
+                cell.setPadding(5);
+                table.addCell(cell);
             }
-            
-            // Create PDF document
-            com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-            PdfWriter.getInstance(document, new FileOutputStream(outputPath));
-            document.open();
-            
-            // Add title
-            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
-            String title = template.getPdfTitle() != null ? template.getPdfTitle() : reportConfig.getReportId();
-            Paragraph titleParagraph = new Paragraph(title, titleFont);
-            titleP
+        }
+        
+        document.add(table);
+        
+        // Add footer
+        if (template.getPdfFooter() != null) {
+            document.add(new Paragraph(" ")); // Add space
+            Font footerFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
+            Paragraph footerParagraph = new Paragraph(template.getPdfFooter(), footerFont);
+            footerParagraph.setAlignment(Element.ALIGN_CENTER);
+            document.add(footerParagraph);
+        }
+        
+        document.close();
+        
+        return outputPath;
+    } catch (IOException | DocumentException e) {
+        logger.error("Error rendering PDF report: {}", e.getMessage(), e);
+        throw new ReportRenderingException("Failed to render PDF report", e);
+    }
+}
+
+/**
+ * Generates the output file path for a report.
+ */
+private String generateOutputPath(ReportConfig reportConfig, WorkflowContext context, String extension) {
+    String baseOutputDir = configManager.getOutputDirectory();
+    String reportId = reportConfig.getReportId();
+    String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    
+    // Get run ID from context or generate one
+    String runId = context.getRunId() != null ? context.getRunId() : timestamp;
+    
+    return Paths.get(baseOutputDir, reportId, runId, reportId + "." + extension).toString();
+}
+
+}
